@@ -39,10 +39,10 @@ class Continuum
             $len = strlen($bucket->getIp());
 
             if ($len > 255) {
-                throw new \Exception(sprintf("IP is larger than 255 bytes, serialization would fail"));
+                throw new KetamaException(sprintf("IP is larger than 255 bytes, serialization would fail"));
             }
             if ($offset >= 0xffffff) {
-                throw new \Exception(sprintf("Offset is larger or equal to 0xffffff, serialization would fail"));
+                throw new KetamaException(sprintf("Offset is larger or equal to 0xffffff, serialization would fail"));
             }
 
             $offsets[] = ($len << 24) | $offset;

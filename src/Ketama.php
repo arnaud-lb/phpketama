@@ -73,7 +73,7 @@ class Ketama
 
         $fd = fopen($filename, 'r');
         if (false === $fd) {
-            throw new \Exception(sprintf('Failed opening %s', $filename));
+            throw new KetamaException(sprintf('Failed opening %s', $filename));
         }
 
         while (!feof($fd)) {
@@ -90,7 +90,7 @@ class Ketama
             }
 
             if (!preg_match('#^([^ \t]+)[ \t]+([0-9]+)#', $line, $m)) {
-                throw new \Exception(sprintf(
+                throw new KetamaException(sprintf(
                     "Failed parsing line %d: '%s'",
                     $lineno,
                     trim($line)
@@ -100,7 +100,7 @@ class Ketama
             $serverinfo = new Serverinfo($m[1], (int) $m[2]);
 
             if (!$serverinfo->valid()) {
-                throw new \Exception(sprintf(
+                throw new KetamaException(sprintf(
                     "Invalid server definition at line %d: '%s'",
                     $lineno,
                     ttrim($line)
@@ -111,7 +111,7 @@ class Ketama
         }
 
         if (count($servers) === 0) {
-            throw new \Exception(sprintf(
+            throw new KetamaException(sprintf(
                 "No valid server definitions in file %s",
                 $filename
             ));
