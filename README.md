@@ -4,8 +4,8 @@ This is a Pure-PHP implementation of libketama, a consistent hashing library.
 
 ## Compatibility with libketama
 
-phpketama uses the same algorithm than libketama, and will always return the
-same results that libketama.
+phpketama uses the same algorithm as libketama, and will always return the
+same results as libketama.
 
 The API is not compatible.
 
