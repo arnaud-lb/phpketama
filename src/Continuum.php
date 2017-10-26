@@ -25,14 +25,12 @@ class Continuum
     public static function create(array $buckets, int $modtime): Continuum
     {
         $bin = pack('VV', $modtime, count($buckets));
-        assert(strlen($bin) === 8);
 
         $points = array_map(function (Bucket $bucket) {
             return $bucket->getPoint();
         }, $buckets);
 
         $bin .= pack('V*', ...$points);
-        assert(strlen($bin) === 8+count($points)*4);
 
         [, $offsets] = array_reduce($buckets, function ($carry, Bucket $bucket) {
             [$offset, $offsets] = $carry;
@@ -50,7 +48,6 @@ class Continuum
         }, [0, []]);
 
         $bin .= pack('V*', ...$offsets);
-        assert(strlen($bin) === 8+count($points)*4*2);
 
         $ips = array_map(function (Bucket $bucket) {
             return $bucket->getIp();
