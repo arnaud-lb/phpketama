@@ -1,6 +1,7 @@
 {
     "name": "alb/phpketama",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Arnaud Le Blanc",
