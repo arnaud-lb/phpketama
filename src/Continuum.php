@@ -12,11 +12,14 @@ class Continuum
     /**
      * Bin is a binary serialization of the buckets:
      *
-     * 0..4:        modtime
-     * 4..8:        bucket count
-     * 8..8+N:      bucket points (N = bucket count)
-     * 8+N..8+N*2:  bucket ip offsets
-     * 8+N*2..?:    bucket ips
+     * 0..4:            modtime
+     * 4..8:            bucket count
+     * 8..8+N*4:        bucket points (N = bucket count)
+     * 8+N*4..8+N*4*2:  bucket ip offsets
+     * 8+N*4*2..?:      bucket ips
+     *
+     * We serialize the buckets like this because it's super fast to cache: the
+     * binary string can be cached as-is, without any transformation.
      *
      * @var bin string
      */
