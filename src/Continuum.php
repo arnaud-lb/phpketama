@@ -94,7 +94,7 @@ class Continuum
             $midp = intval(($lowp + $highp) / 2);
 
             if ($midp === $numservers) {
-                return $buckets[0];
+                return $this->readIp(0);
             }
 
             [, $midval] = unpack('V', $this->bin, self::OFFSET_POINTS + $midp*4);
