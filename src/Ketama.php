@@ -31,16 +31,14 @@ class Ketama
 
         foreach ($servers as $i => $server) {
             $pct = $server->getMemory() / $memory;
-            // printf("pct: %s\n", $pct);
             $ks = floor($pct * 40 * count($servers));
-            // printf("ks: %s\n", $ks);
+
             for ($k = 0; $k < $ks; $k++) {
                 $ss = sprintf('%s-%d', $server->getAddr(), $k);
                 $digest = hash('md5', $ss, true);
-                // printf("ss: %s\n", $ss);
+
                 for ($h = 0; $h < 4; $h++) {
                     [, $point] = unpack('V', substr($digest, $h*4, 4));
-                    // var_dump($point);exit;
                     $buckets[$cont] = new Bucket($point, $server->getAddr());
                     $cont++;
                 }
