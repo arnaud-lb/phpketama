@@ -39,7 +39,7 @@ class Ketama
                 $digest = hash('md5', $ss, true);
                 // printf("ss: %s\n", $ss);
                 for ($h = 0; $h < 4; $h++) {
-                    list (, $point) = unpack('V', substr($digest, $h*4, 4));
+                    [, $point] = unpack('V', substr($digest, $h*4, 4));
                     // var_dump($point);exit;
                     $buckets[$cont] = new Bucket($point, $server->getAddr());
                     $cont++;
