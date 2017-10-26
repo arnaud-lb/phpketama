@@ -18,6 +18,7 @@
         "php": "^7.1.0"
     },
     "require-dev": {
-        "symfony/cache": "~3.3"
+        "symfony/cache": "~3.3",
+        "phpunit/phpunit": "^6.4"
     }
 }
