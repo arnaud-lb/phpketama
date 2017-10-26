@@ -1,18 +1,18 @@
 # PHP Ketama
 
-This is a Pure-PHP implementation of libketama, a consistent hashing library.
+This is a pure-PHP implementation of libketama, a consistent hashing library.
 
 ## Compatibility with libketama
 
-phpketama uses the same algorithm as libketama, and will always return the
+PHP Ketama uses the same algorithm as libketama, and will always return the
 same results as libketama.
 
 The API is not compatible.
 
 ## Speed
 
-Loading a cached continuum files is faster in phpketama. Hashing is slower. As
-per the included benchmark, this makes phpketama faster than libketama when
+Loading a cached continuum file is faster in PHP Ketama. Hashing is slower. As
+per the included benchmark, this makes PHP Ketama faster than libketama when
 doing up to 200 hashes per instance.
 
 ## Usage
