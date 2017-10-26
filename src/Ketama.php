@@ -32,7 +32,7 @@ class Ketama
         foreach ($servers as $i => $server) {
             $pct = $server->getMemory() / $memory;
             // printf("pct: %s\n", $pct);
-            $ks = $pct * 40 * count($servers);
+            $ks = floor($pct * 40 * count($servers));
             // printf("ks: %s\n", $ks);
             for ($k = 0; $k < $ks; $k++) {
                 $ss = sprintf('%s-%d', $server->getAddr(), $k);
