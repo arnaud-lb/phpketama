@@ -134,10 +134,14 @@ class Continuum
 
     public function printContinuum(): void
     {
-        printf("Numpoints in continuum: %d\n", count($this->continuum));
+        [, $numservers] = unpack('V', $this->bin, self::OFFSET_NUMSERVERS);
 
-        foreach ($this->continuum as $bucket) {
-            printf("%s (%u)\n", $bucket->getIp(), $bucket->getPoint());
+        printf("Numpoints in continuum: %d\n", $numservers);
+
+        for ($i = 0; $i < $numservers; $i++) {
+            $ip = $this->readIp($i);
+            [, $point] = unpack('V', $this->bin, self::OFFSET_POINTS + $i*4);
+            printf("%s (%u)\n", $ip, $point);
         }
     }
 
