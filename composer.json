@@ -20,5 +20,10 @@
     "require-dev": {
         "symfony/cache": "~3.3",
         "phpunit/phpunit": "^6.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "ocramius/package-versions": true
+        }
     }
 }
