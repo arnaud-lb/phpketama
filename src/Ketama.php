@@ -7,6 +7,7 @@ use Psr\SimpleCache\CacheInterface;
 
 class Ketama
 {
+    /** @var CacheInterface */
     private $cache;
 
     public function __construct(CacheInterface $cache)
@@ -22,6 +23,9 @@ class Ketama
 
         $servers = $this->readDefinitions($filename);
         $mtime = filemtime($filename);
+        if ($mtime === false) {
+            throw new KetamaException(sprintf('Failed opening %s', $filename));
+        }
 
         $memory = array_reduce($servers, function ($carry, Serverinfo $server): int {
             return $carry + $server->getMemory();
@@ -38,7 +42,9 @@ class Ketama
                 $digest = hash('md5', $ss, true);
 
                 for ($h = 0; $h < 4; $h++) {
-                    [, $point] = unpack('V', substr($digest, $h*4, 4));
+                    $unpacked = unpack('V', substr($digest, $h*4, 4));
+                    assert($unpacked !== false);
+                    [, $point] = $unpacked;
                     $buckets[$cont] = new Bucket($point, $server->getAddr());
                     $cont++;
                 }
@@ -63,6 +69,7 @@ class Ketama
         return $continuum;
     }
 
+    /** @return Serverinfo[] */
     private function readDefinitions(string $filename): array
     {
         $servers = [];
@@ -101,7 +108,7 @@ class Ketama
                 throw new KetamaException(sprintf(
                     "Invalid server definition at line %d: '%s'",
                     $lineno,
-                    ttrim($line)
+                    trim($line)
                 ));
             }
 
@@ -131,6 +138,8 @@ class Ketama
         if (null === $data) {
             return null;
         }
+
+        assert(is_string($data));
 
         $continuum = Continuum::unserialize($data);
 

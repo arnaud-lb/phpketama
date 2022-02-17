@@ -6,7 +6,7 @@ use Ketama\Ketama;
 
 class KetamaTest extends TestCase
 {
-    public function testPhpketamaIsCompatibleWithCKetama()
+    public function testPhpketamaIsCompatibleWithCKetama(): void
     {
         $cache = new ArrayCache();
         $ketama = new Ketama($cache);

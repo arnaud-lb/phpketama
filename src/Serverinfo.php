@@ -5,7 +5,10 @@ namespace Ketama;
 
 class Serverinfo
 {
+    /** @var string */
     private $addr;
+
+    /** @var int */
     private $memory;
 
     public function __construct(string $addr, int $memory)
