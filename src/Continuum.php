@@ -21,10 +21,11 @@ class Continuum
      * We serialize the buckets like this because it's super fast to cache: the
      * binary string can be cached as-is, without any transformation.
      *
-     * @var bin string
+     * @var string
      */
     private $bin;
 
+    /** @param Bucket[] $buckets */
     public static function create(array $buckets, int $modtime): Continuum
     {
         $bin = pack('VV', $modtime, count($buckets));
@@ -78,13 +79,12 @@ class Continuum
 
     public function getModtime(): int
     {
-        [, $modtime] = unpack('V', $this->bin, self::OFFSET_MODTIME);
-        return $modtime;
+        return $this->unpackV($this->bin, self::OFFSET_MODTIME);
     }
 
     public function getServer(string $key): string
     {
-        [, $numservers] = unpack('V', $this->bin, self::OFFSET_NUMSERVERS);
+        $numservers = $this->unpackV($this->bin, self::OFFSET_NUMSERVERS);
 
         $h = $this->hashi($key);
         $highp = $numservers;
@@ -97,12 +97,12 @@ class Continuum
                 return $this->readIp(0);
             }
 
-            [, $midval] = unpack('V', $this->bin, self::OFFSET_POINTS + $midp*4);
+            $midval = $this->unpackV($this->bin, self::OFFSET_POINTS + $midp*4);
 
             if ($midp === 0) {
                 $midval1 = 0;
             } else {
-                [, $midval1] = unpack('V', $this->bin, self::OFFSET_POINTS + ($midp-1)*4);
+                $midval1 = $this->unpackV($this->bin, self::OFFSET_POINTS + ($midp-1)*4);
             }
 
             if ($h <= $midval && $h > $midval1) {
@@ -121,10 +121,10 @@ class Continuum
         }
     }
 
-    private function readIp($idx): string
+    private function readIp(int $idx): string
     {
-        [, $numservers] = unpack('V', $this->bin, self::OFFSET_NUMSERVERS);
-        [, $ipoffset] = unpack('V', $this->bin, self::OFFSET_POINTS + $numservers*4 + $idx*4);
+        $numservers = $this->unpackV($this->bin, self::OFFSET_NUMSERVERS);
+        $ipoffset = $this->unpackV($this->bin, self::OFFSET_POINTS + $numservers*4 + $idx*4);
 
         $len = $ipoffset >> 24;
         $ipoffset = $ipoffset & 0xffffff;
@@ -134,13 +134,13 @@ class Continuum
 
     public function printContinuum(): void
     {
-        [, $numservers] = unpack('V', $this->bin, self::OFFSET_NUMSERVERS);
+        $numservers = $this->unpackV($this->bin, self::OFFSET_NUMSERVERS);
 
         printf("Numpoints in continuum: %d\n", $numservers);
 
         for ($i = 0; $i < $numservers; $i++) {
             $ip = $this->readIp($i);
-            [, $point] = unpack('V', $this->bin, self::OFFSET_POINTS + $i*4);
+            $point = $this->unpackV($this->bin, self::OFFSET_POINTS + $i*4);
             printf("%s (%u)\n", $ip, $point);
         }
     }
@@ -148,7 +148,15 @@ class Continuum
     private function hashi(string $str): int
     {
         $digest = hash('md5', $str, true);
-        $values = unpack('V', $digest);
-        return $values[1];
+        return $this->unpackV($digest, 0);
+    }
+
+    private function unpackV(string $string, int $offset): int
+    {
+        $unpacked = unpack('V', $string, $offset);
+
+        assert($unpacked !== false && isset($unpacked[1]) && is_int($unpacked[1]));
+
+        return $unpacked[1];
     }
 }

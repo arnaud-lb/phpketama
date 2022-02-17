@@ -5,7 +5,10 @@ namespace Ketama;
 
 class Bucket
 {
+    /** @var int */
     private $point;
+
+    /** @var string */
     private $ip;
 
     public function __construct(int $point, string $ip)
