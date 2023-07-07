@@ -7,12 +7,8 @@ use Psr\SimpleCache\CacheInterface;
 
 class Ketama
 {
-    /** @var CacheInterface */
-    private $cache;
-
-    public function __construct(CacheInterface $cache)
+    public function __construct(private CacheInterface $cache)
     {
-        $this->cache = $cache;
     }
 
     public function createContinuum(string $filename): Continuum
