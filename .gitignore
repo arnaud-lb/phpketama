@@ -1,2 +1,4 @@
 tags
 vendor
+.phpunit.cache
+auth.json

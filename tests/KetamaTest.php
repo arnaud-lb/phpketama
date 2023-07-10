@@ -1,14 +1,15 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Cache\Simple\ArrayCache;
 use Ketama\Ketama;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 class KetamaTest extends TestCase
 {
     public function testPhpketamaIsCompatibleWithCKetama(): void
     {
-        $cache = new ArrayCache();
+        $cache = new Psr16Cache(new ArrayAdapter());
         $ketama = new Ketama($cache);
         $continuum = $ketama->createContinuum(__DIR__."/fixtures/continuum0");
 

@@ -5,9 +5,9 @@ namespace Ketama;
 
 class Continuum
 {
-    const OFFSET_MODTIME = 0;
-    const OFFSET_NUMSERVERS = 4;
-    const OFFSET_POINTS = 8;
+    private const OFFSET_MODTIME = 0;
+    private const OFFSET_NUMSERVERS = 4;
+    private const OFFSET_POINTS = 8;
 
     /**
      * Bin is a binary serialization of the buckets:
@@ -20,10 +20,8 @@ class Continuum
      *
      * We serialize the buckets like this because it's super fast to cache: the
      * binary string can be cached as-is, without any transformation.
-     *
-     * @var string
      */
-    private $bin;
+    private string $bin;
 
     /** @param Bucket[] $buckets */
     public static function create(array $buckets, int $modtime): Continuum

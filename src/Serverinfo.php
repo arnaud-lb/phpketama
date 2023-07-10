@@ -5,16 +5,8 @@ namespace Ketama;
 
 class Serverinfo
 {
-    /** @var string */
-    private $addr;
-
-    /** @var int */
-    private $memory;
-
-    public function __construct(string $addr, int $memory)
+    public function __construct(private string $addr, private int $memory)
     {
-        $this->addr = $addr;
-        $this->memory = $memory;
     }
 
     public function getAddr(): string
@@ -29,6 +21,6 @@ class Serverinfo
 
     public function valid(): bool
     {
-        return strlen($this->addr) > 0 && $this->memory > 0;
+        return $this->addr !== '' && $this->memory > 0;
     }
 }

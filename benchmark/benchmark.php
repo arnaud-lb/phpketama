@@ -1,7 +1,8 @@
 <?php
 
 use Ketama\Ketama;
-use Symfony\Component\Cache\Simple\ApcuCache;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 require __DIR__ . "/../vendor/autoload.php";
 
@@ -22,7 +23,7 @@ function ketama() {
 }
 
 function phpketama() {
-    $cache = new ApcuCache(strtr(Ketama::class, '\\', '_'));
+    $cache = new Psr16Cache(new ApcuAdapter(str_replace('\\', '_', Ketama::class)));
     for ($x = 0; $x < ITERATIONS; $x++) {
         $continuum = (new Ketama($cache))->createContinuum(__DIR__ . '/servers');
         for ($i = 0; $i < HASHES; $i++) {

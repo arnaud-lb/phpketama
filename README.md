@@ -21,10 +21,11 @@ doing up to 200 hashes per instance.
 <?php
 
 use Ketama\Ketama;
-use Symfony\Component\Cache\Simple\ApcuCache;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 // Cache used to store the parsed continuum file
-$cache = new ApcuCache('mynamespace');
+$cache = new Psr16Cache(new ApcuAdapter('mynamespace')
 
 $ketama = new Ketama($cache);
 $continuum = $ketama->createContinuum('/some/file');
